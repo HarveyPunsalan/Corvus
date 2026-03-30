@@ -95,3 +95,58 @@ export async function deletePost(id: number, requestingUserId: number) {
     where: { id },
   });
 }
+
+// -- LIKES --
+export async function likePost(postId: number, userId: number) {
+  await getPostById(postId); // reuses existing function — throws 404 if post doesn't exist
+
+  // If the user already liked this post, Prisma throws P2002 (@@unique violation)
+  // My global error handler from previous task catches P2002 and returns 409 Conflict
+  await prisma.postLike.create({
+    data: { userId, postId },
+  });
+}
+
+export async function unlikePost(postId: number, userId: number) {
+  // Check if the like actually exists first
+  const like = await prisma.postLike.findUnique({
+    where: { userId_postId: { userId, postId } },
+    // ↑ This userId_postId is the name Prisma auto-generates for my @@unique([userId, postId])
+  });
+
+  if (!like) throw new AppError(400, 'You have not liked this post');
+
+  await prisma.postLike.delete({
+    where: { userId_postId: { userId, postId } },
+  });
+}
+
+export async function getLikeCount(postId: number) {
+  // Just returns the number of likes for a post - no auth needed
+  return prisma.postLike.count({ where: { postId } });
+}
+
+// -- FEED --
+export async function getFeed(userId: number, skip = 0, limit = 20) {
+  // Step 1: Find everyone the current user follows
+  const follows = await prisma.follow.findMany({
+    where: { followerId: userId },
+    select: { followingId: true }, // i only need their IDs
+  });
+
+  const followingIds = follows.map(f => f.followingId);
+  // ↑ Transforms [{ followingId: 2 }, { followingId: 3 }] → [2, 3]
+
+  // If not following anyone, return empty feed immediately
+  if (followingIds.length === 0) return [];
+
+  // Step 2: Get posts from those users only, newest first
+  return prisma.post.findMany({
+    where: { ownerId: { in: followingIds } },
+    // ↑ The "in" here: [...] is like SQL's WHERE owner_id IN (2, 3)
+    orderBy: { createdAt: 'desc' },
+    skip,
+    take: limit,
+    include: { owner: { select: { id: true, username: true } } },
+  });
+}
