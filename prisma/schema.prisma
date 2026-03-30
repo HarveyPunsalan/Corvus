@@ -17,3 +17,19 @@ model User {
 
   @@map("users")
 }
+
+model Post {
+  id             Int      @id @default(autoincrement())
+  title          String
+  content        String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime? @updatedAt      @map("created_at")
+  ownerId        Int                        @map("created_at")
+
+  owner Post @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  like PostLike[]
+
+  
+  
+      
+}
