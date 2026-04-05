@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://corvus-api-flnx.onrender.com';
 
 // -- HELPER --
 // If a JWT token is stored, it adds the Authorization header automatically
