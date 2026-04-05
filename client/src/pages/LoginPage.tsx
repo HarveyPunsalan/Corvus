@@ -26,8 +26,12 @@ export function LoginPage() {
       const data = await authApi.login({ username, password });
       await login(data.access_token);
       navigate('/');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Something went wrong');
+      }
     } finally {
       setLoading(false);
     }
