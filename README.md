@@ -1,16 +1,14 @@
 # Corvus 🐦‍⬛
 
-A social media backend API built with Node.js, Express, and TypeScript, using Supabase as the database.
-
-The name comes from the raven (Corvus corax) - known for communication, memory, and being surprisingly intelligent for its size. Felt right for a project about connecting people.
+A full stack social media app built with Node.js, Express, TypeScript, and React. The backend is a REST API connected to a real PostgreSQL database through Supabase. The frontend is a React app that talks to it.
 
 ---
 
 ## What is this?
 
-Corvus is a REST API that powers the backend of a social media platform. Users can create accounts, write posts, follow each other, and get a personalized feed. It handles authentication with JWT tokens and stores everything in a real PostgreSQL database through Supabase.
+Corvus is a practice project. I built it to get comfortable with TypeScript on both the backend and frontend, work with a supabase instead of SQLite, and actually connect the two ends together into something that works end to end.
 
-I built this outside of school. No tutorials followed just me wanting to practice TypeScript properly and get comfortable with a real SQL database instead of relying on SQLite. My mentor pushed me toward Supabase for that reason and I went with it.
+No tutorials followed. Just me figuring things out, breaking things, and fixing them.
 
 ---
 
@@ -21,13 +19,14 @@ I built this outside of school. No tutorials followed just me wanting to practic
 - Like and unlike posts
 - Follow and unfollow other users
 - Personalized feed (posts from people you follow)
-- Ownership checks — you can only edit or delete your own posts
+- Ownership checks you can only edit or delete your own posts
 - Passwords hashed with bcrypt, never stored plain
 
 ---
 
 ## Tech Stack
 
+### Backend
 | | |
 |---|---|
 | **Framework** | Express.js |
@@ -38,6 +37,25 @@ I built this outside of school. No tutorials followed just me wanting to practic
 | **Password Hashing** | bcryptjs |
 | **Validation** | Zod |
 | **Dev Server** | ts-node-dev |
+
+### Frontend
+| | |
+|---|---|
+| **Framework** | React + TypeScript |
+| **Build Tool** | Vite |
+| **Styling** | Tailwind CSS |
+| **Routing** | React Router |
+
+---
+
+## Live
+
+| | |
+|---|---|
+| **Frontend** | https://corvus-woad.vercel.app/login |
+| **Backend** | https://corvus-api-flnx.onrender.com |
+
+> Both are on free tiers. The backend on Render may take up to 50 seconds to wake up on the first request if it's been idle.
 
 ---
 
@@ -74,56 +92,37 @@ I built this outside of school. No tutorials followed just me wanting to practic
 
 ---
 
-## Live API
-
-Base URL: `https://corvus-api-flnx.onrender.com`
-
-> Hosted on Render's free tier - first request may take up to 50 seconds if the service is asleep.
-
-Try the health check:
-```
-https://corvus-api-flnx.onrender.com/health
-```
-
----
-
 ## Project Structure
+
 ```
-src/
-├── index.ts           # Entry point
-├── routes/            # Route definitions
-│   ├── auth.ts
-│   ├── users.ts
-│   └── posts.ts
-├── services/          # Business logic + database calls
-│   ├── auth.ts
-│   ├── users.ts
-│   └── post.ts
-├── schemas/           # Zod validation schemas
-│   └── post.ts
-├── middleware/        # Auth + error handler
-│   ├── auth.ts
-│   └── errorHandler.ts
-├── lib/               # Prisma client
-│   └── prisma.ts
-└── types/             # TypeScript type extensions
-    └── express.d.ts
-prisma/
-├── schema.prisma      # Database models
-└── migrations/        # Migration history
+Corvus/
+├── src/                    # Backend
+│   ├── index.ts
+│   ├── routes/
+│   ├── services/
+│   ├── schemas/
+│   ├── middleware/
+│   ├── lib/
+│   └── types/
+├── prisma/
+│   ├── schema.prisma
+│   └── migrations/
+└── client/                 # Frontend
+    └── src/
+        ├── pages/
+        ├── components/
+        │   ├── layout/
+        │   └── ui/
+        ├── hooks/
+        ├── lib/
+        ├── context/
+        └── types/
 ```
 
 ---
 
 ## Version
 
-**v0.1.0** — Core API complete. Auth, posts, likes, follows, and feed all working.
+**v0.2.0** - Now full stack. Frontend connected to the backend and deployed.
 
----
-
-## Prerequisites
-
-Things you need installed on your machine before anything else.
-
-**Node.js** (v18 or higher)
-Download from https://nodejs.org — grab the LTS version.
+**v0.1.0** - Core API complete. Auth, posts, likes, follows, and feed all working.
