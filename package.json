@@ -30,6 +30,7 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
     "prisma": "^7.5.0",
+    "react-router-dom": "^7.14.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
